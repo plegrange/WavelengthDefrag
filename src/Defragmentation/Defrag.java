@@ -28,6 +28,6 @@ public class Defrag {
         } catch (WriteException e) {
             e.printStackTrace();
         }
-
+        geneticAlgorithm = new GeneticAlgorithm(linkTableInitial, lightpathManager);
     }
 }

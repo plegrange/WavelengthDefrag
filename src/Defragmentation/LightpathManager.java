@@ -29,6 +29,7 @@ public class LightpathManager {
         buildLightpaths();
         return lightPaths;
     }
+
     private void buildLightpaths() {
         while (signalsAll.size() > 0) {
             List<Signal> signals = getSimilarSignals(signalsAll.get(0));
@@ -60,5 +61,15 @@ public class LightpathManager {
 
     private void addSignal(Signal signal) {
         signalsAll.add(signal);
+    }
+
+    public List<Lightpath> getRandomLightpaths() {
+        double min = 1200.00, max = 1800;
+        SecureRandom random = new SecureRandom();
+        List<Lightpath> newLightpaths = lightPaths;
+        for (Lightpath lightpath : newLightpaths) {
+            lightpath.wavelength = min + (max - min) * random.nextDouble();
+        }
+        return newLightpaths;
     }
 }
