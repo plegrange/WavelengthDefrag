@@ -16,10 +16,12 @@ public class LinkTableManager {
     public LinkTable buildInitial() {
         List<Double> wavelengths = new ArrayList<>();
         List<String> linkIDs = new ArrayList<>();
+        wavelengths = addWavelength(wavelengths, 1200.00);
         for (Lightpath lightpath : lightpaths) {
             wavelengths = addWavelength(wavelengths, lightpath.wavelength);
             linkIDs = addLinkIDs(linkIDs, lightpath.linkIDs);
         }
+        wavelengths = addWavelength(wavelengths, 1800.00);
         String[][] table = new String[linkIDs.size()][wavelengths.size()];
         for (int i = 0; i < linkIDs.size(); i++) {
             for (int j = 0; j < wavelengths.size(); j++) {

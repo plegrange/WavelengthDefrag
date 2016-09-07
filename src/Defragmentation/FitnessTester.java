@@ -16,17 +16,18 @@ public class FitnessTester {
         double fragmentation = 0;
         try {
             for (int i = 0; i < linkTable.linkIDs.size(); i++) {
-                List<Double> linkWavelengths = getLinkWavelengths(i,linkTable);
+                List<Double> linkWavelengths = getLinkWavelengths(i, linkTable);
                 if (linkWavelengths.size() == 0) {
 
                 } else
-                    fragmentation += calculateFragmentation(linkWavelengths);
+                    fragmentation += blockingProbability(linkWavelengths);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return fragmentation / linkTable.linkIDs.size() * 100;
+        return fragmentation * 100;
     }
+
     private List<Double> getLinkWavelengths(int i, LinkTable linkTable) {
         // input : link index
         // output : list containing all occupied wavelengths on given link
@@ -38,6 +39,24 @@ public class FitnessTester {
         }
         return linkWavelengths;
     }
+
+    private double blockingProbability(List<Double> linkWavelengths) {
+        double availableSlotBlocks = 0;
+        double point1;
+        double point2;
+        double separation;
+        double minSpace = 2.00;
+        int collisionsDetected = 0;
+        for (int i = 0; i < linkWavelengths.size() - 1; i++) {
+            point1 = linkWavelengths.get(i);
+            point2 = linkWavelengths.get(i + 1);
+            separation = point2 - point1;
+            if (separation > minSpace)
+                availableSlotBlocks++;
+        }
+        return 2.00 / (Math.pow((maxWavelength - minWavelength) / 4.00 + 1.00, 2) + Math.pow(availableSlotBlocks, 2));
+    }
+
     private double calculateFragmentation(List<Double> linkWavelengths) {
         // input : list of a given link's occupied wavelengths
         // output : fragmentation coefficient

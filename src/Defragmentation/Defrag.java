@@ -13,8 +13,9 @@ import java.util.List;
 public class Defrag {
     LightpathManager lightpathManager;
     LinkTableManager linkTableManager;
-    LinkTableOutput linkTableOutput = new LinkTableOutput("initial.xls");
+    LinkTableOutput linkTableOutput = new LinkTableOutput("initial.xls"), outputfinal = new LinkTableOutput("final.xls");
     GeneticAlgorithm geneticAlgorithm;
+    HeuristicAlgorithm heuristicAlgorithm;
 
     public Defrag(List<Node> nodes) {
         lightpathManager = new LightpathManager(nodes);
@@ -28,6 +29,16 @@ public class Defrag {
         } catch (WriteException e) {
             e.printStackTrace();
         }
-        geneticAlgorithm = new GeneticAlgorithm(linkTableInitial, lightpathManager);
+        //heuristicAlgorithm = new HeuristicAlgorithm();
+        //LinkTable newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
+        geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
+        LinkTable newLinkTable = geneticAlgorithm.run();
+        try {
+            outputfinal.write(newLinkTable);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
 }
