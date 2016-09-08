@@ -2,9 +2,9 @@ package Defragmentation;
 
 import ExcelWriter.LinkTableOutput;
 import Test.Node;
-import jxl.write.WriteException;
+import Test.Signal;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,29 +16,33 @@ public class Defrag {
     LinkTableOutput linkTableOutput = new LinkTableOutput("initial.xls"), outputfinal = new LinkTableOutput("final.xls");
     GeneticAlgorithm geneticAlgorithm;
     HeuristicAlgorithm heuristicAlgorithm;
+    LinkTable newLinkTable;
 
     public Defrag(List<Node> nodes) {
         lightpathManager = new LightpathManager(nodes);
         List<Lightpath> lightpaths = lightpathManager.build();
         linkTableManager = new LinkTableManager(lightpaths);
         LinkTable linkTableInitial = linkTableManager.buildInitial();
-        try {
-            linkTableOutput.write(linkTableInitial);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (WriteException e) {
-            e.printStackTrace();
-        }
-        //heuristicAlgorithm = new HeuristicAlgorithm();
-        //LinkTable newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
+
+       // heuristicAlgorithm = new HeuristicAlgorithm();
+        //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
         geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
-        LinkTable newLinkTable = geneticAlgorithm.run(linkTableInitial);
-        try {
-            outputfinal.write(newLinkTable);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (WriteException e) {
-            e.printStackTrace();
+        newLinkTable = geneticAlgorithm.run(linkTableInitial);
+    }
+
+    public List<Signal> getNewSignals() {
+        List<Signal> signals = new ArrayList<>();
+        for (Lightpath lightpath : newLinkTable.lightPaths) {
+            signals.add(lightpath.signal);
         }
+        return signals;
+    }
+
+    public List<Signal> getOldSignals() {
+        List<Signal> signals = new ArrayList<>();
+        for (Lightpath lightpath : newLinkTable.lightPaths) {
+            signals.add(lightpath.getNewSignal());
+        }
+        return signals;
     }
 }

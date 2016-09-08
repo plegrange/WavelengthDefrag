@@ -19,7 +19,7 @@ public class NetworkRebuilder {
         this.newSignals = newSignals;
     }
 
-    public List<Node> rebuildNodes(List<Node> nodes) {
+    public ArrayList<Node> rebuildNodes(ArrayList<Node> nodes) {
         for (Node node : nodes) {
             for (int i = 0; i < oldSignals.size(); i++) {
                 node.rebuild(oldSignals.get(i), newSignals.get(i));
@@ -28,7 +28,7 @@ public class NetworkRebuilder {
         return nodes;
     }
 
-    public List<Link> rebuildLinks(List<Link> links) {
+    public ArrayList<Link> rebuildLinks(ArrayList<Link> links) {
         for (Link link : links) {
             ArrayList<Signal> reservations = link.get_Reservations();
             for (Signal signal : reservations) {
@@ -43,7 +43,15 @@ public class NetworkRebuilder {
         return links;
     }
 
-    public void rebuildACO(ACO aco){
-        ArrayList<Node> nodes = aco.
+    public ArrayList<Node> rebuildACONodes(ACO aco) {
+        ArrayList<Node> nodes = aco.getNodes();
+        nodes = rebuildNodes(nodes);
+        return nodes;
+    }
+
+    public ArrayList<Link> rebuildACOLinks(ACO aco) {
+        ArrayList<Link> links = aco.getLinks();
+        links = rebuildLinks(links);
+        return links;
     }
 }

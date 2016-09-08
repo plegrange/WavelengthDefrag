@@ -1,9 +1,11 @@
 package Test;
 
 import Defragmentation.Defrag;
+import Defragmentation.NetworkRebuilder;
 import ExcelWriter.WriteExcel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Test {
@@ -62,6 +64,8 @@ public class Test {
         }
     }
 
+    Defrag defrag;
+
     public void RunTest() {
         table.LoadNetwork();
         ac.BuildCandidates();
@@ -70,6 +74,7 @@ public class Test {
         ac.init();
         ac.WPD = Math.round(noWaves / nodes.size());
         boolean defragged = false;
+        int counter = 0;
         while ((ac.total < totalSignals) || ac.Traffic() || ac.Acks()) {
             /*if(ac.total == totalSignals*0.5){
                 try {
@@ -80,11 +85,14 @@ public class Test {
                     e.printStackTrace();
                 }
             }*/
-            if (ac.total > totalSignals * 0.5 && !defragged) {
-                Defrag defrag = new Defrag(nodes);
-                defragged = true;
+            if (ac.time % 100 == 0 && !defragged && ac.total > 0) {
+                defrag = new Defrag(nodes);
+                //defragged = true;
+                rebuildNetwork();
+                System.out.println("Defragged");
             }
-
+            System.out.println(ac.time);
+            //counter++;
             if (ac.totalGen < totalSignals) {
                 if ((totalSignals - ac.totalGen) < NrSignalsPerTime) {
                     GenerateTraffic(totalSignals - ac.totalGen);
@@ -108,5 +116,13 @@ public class Test {
 
     }
 
-
+    private void rebuildNetwork() {
+        List<Signal> oldSignals = defrag.getOldSignals();
+        List<Signal> newSignals = defrag.getNewSignals();
+        NetworkRebuilder networkRebuilder = new NetworkRebuilder(oldSignals, newSignals);
+        nodes = networkRebuilder.rebuildNodes(nodes);
+        links = networkRebuilder.rebuildLinks(links);
+        ac.nodes = networkRebuilder.rebuildACONodes(ac);
+        ac.links = networkRebuilder.rebuildACOLinks(ac);
+    }
 }

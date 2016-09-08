@@ -10,7 +10,7 @@ public class Mutator {
     public Mutator() {
     }
 
-    private double mutationRate = 0.4;
+    private double mutationRate = 0.1;
 
     public LinkTable mutateLightpaths(LinkTable linkTable) {
         List<Lightpath> lightpaths = linkTable.lightPaths;

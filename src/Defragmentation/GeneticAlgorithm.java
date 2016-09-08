@@ -14,7 +14,7 @@ public class GeneticAlgorithm {
     LightpathManager lightpathManager;
     LinkTableManager linkTableManager;
     int P = 100;
-    int alpha = 25;
+    int alpha = 40;
     List<LinkTable> chromosomes;
 
     public GeneticAlgorithm(LightpathManager lightpathManager) {
@@ -26,11 +26,11 @@ public class GeneticAlgorithm {
         selector = new Selector();
         crosser = new Crosser();
         fitnessTester = new FitnessTester();
-
+        LinkTable best = linkTableInitial;
         initializePopulation();
         //testPopulation();
-        System.out.println(fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 200; i++) {
+        //System.out.println(fitnessTester.testLinkTableFitness(linkTableInitial));
+        for (int i = 0; i < 300; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();
@@ -39,9 +39,11 @@ public class GeneticAlgorithm {
             chromosomes = merge(chromosomes, tempList);
             selectNewPopulation();
             //testPopulation();
-            LinkTable best = selector.selectBest(chromosomes, fitnessTester);
+            best = selector.selectBest(chromosomes, fitnessTester);
             System.out.println(i+" -> "+fitnessTester.testLinkTableFitness(best));
         }
+        best = selector.selectBest(chromosomes, fitnessTester);
+        System.out.println(fitnessTester.testLinkTableFitness(best));
         //testPopulation();
         return selector.selectBest(chromosomes, fitnessTester);
     }

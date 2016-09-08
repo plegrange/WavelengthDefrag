@@ -35,6 +35,7 @@ public class Node {
     public void rebuild(Signal oldSignal, Signal newSignal) {
         rebuildCurrent(oldSignal, newSignal);
         rebuildArriving(oldSignal, newSignal);
+        rebuildArriving(oldSignal, newSignal);
         rebuildAckTraversing(oldSignal, newSignal);
         rebuildAckSend(oldSignal, newSignal);
         rebuildWaves(oldSignal, newSignal);

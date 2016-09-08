@@ -65,7 +65,6 @@ public class Signal {
     public boolean isSameSignal(Signal other) {
         if (this._Wavelength == other._Wavelength) {
             if (this._Route._Path == other._Route._Path) {
-                System.out.println();
                 return true;
             }
         }
