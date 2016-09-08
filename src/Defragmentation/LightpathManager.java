@@ -32,22 +32,8 @@ public class LightpathManager {
 
     private void buildLightpaths() {
         while (signalsAll.size() > 0) {
-            List<Signal> signals = getSimilarSignals(signalsAll.get(0));
-            lightPaths.add(new Lightpath(signals, new BigInteger(100, random).toString(16)));
+            lightPaths.add(new Lightpath(signalsAll.remove(0), new BigInteger(100, random).toString(16)));
         }
-    }
-
-    private List<Signal> getSimilarSignals(Signal signal) {
-        List<Signal> list = new ArrayList<>();
-        list.add(signal);
-        signalsAll.remove(signal);
-        for (Signal s : signalsAll) {
-            if (s.isSameSignal(signal)) {
-                list.add(s);
-                signalsAll.remove(s);
-            }
-        }
-        return list;
     }
 
     private void extractSignals() {

@@ -15,15 +15,22 @@ public class Lightpath {
     double wavelength;
     Path route;
     String id;
-    List<Signal> signals;
+    Signal signal;
     List<String> linkIDs;
+    Signal newSignal;
 
-    public Lightpath(List<Signal> signals, String id) {
-        this.signals = signals;
-        this.route = signals.get(0).get_Route();
+    public Lightpath(Signal signal, String id) {
+        this.signal = signal;
+        this.route = signal.get_Route();
         this.id = id;
-        this.wavelength = signals.get(0).get_Wavelength();
+        this.wavelength = signal.get_Wavelength();
         setLinkIDs();
+    }
+
+    public Signal getNewSignal() {
+        Signal newSignal = signal;
+        newSignal.setWavelength(this.wavelength);
+        return newSignal;
     }
 
     private void setLinkIDs() {

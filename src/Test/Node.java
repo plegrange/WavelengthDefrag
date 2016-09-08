@@ -32,6 +32,66 @@ public class Node {
 
     }
 
+    public void rebuild(Signal oldSignal, Signal newSignal) {
+        rebuildCurrent(oldSignal, newSignal);
+        rebuildArriving(oldSignal, newSignal);
+        rebuildAckTraversing(oldSignal, newSignal);
+        rebuildAckSend(oldSignal, newSignal);
+        rebuildWaves(oldSignal, newSignal);
+    }
+
+    private void rebuildWaves(Signal oldSignal, Signal newSignal) {
+        for (Wave wave : _Waves) {
+            if (wave.getWavelength() == oldSignal._Wavelength && wave.getPath() == oldSignal._Route) {
+                wave.setWavelength(newSignal._Wavelength);
+            }
+        }
+    }
+
+    private void rebuildAckSend(Signal oldSignal, Signal newSignal) {
+        for (Ack ack : _AckSend) {
+            Signal signal = ack._Signal;
+            if (signal.isSameSignal(oldSignal)) {
+                signal.setWavelength(newSignal._Wavelength);
+            }
+            ack._Signal = signal;
+        }
+    }
+
+    private void rebuildAckArriving(Signal oldSignal, Signal newSignal) {
+        for (Ack ack : _AckArriving) {
+            Signal signal = ack._Signal;
+            if (signal.isSameSignal(oldSignal)) {
+                signal.setWavelength(newSignal._Wavelength);
+            }
+            ack._Signal = signal;
+        }
+    }
+
+    private void rebuildAckTraversing(Signal oldSignal, Signal newSignal) {
+        for (Signal signal : _AckTraversing) {
+            if (signal.isSameSignal(oldSignal)) {
+                signal.setWavelength(newSignal._Wavelength);
+            }
+        }
+    }
+
+    private void rebuildArriving(Signal oldSignal, Signal newSignal) {
+        for (Signal signal : _Arriving) {
+            if (signal.isSameSignal(oldSignal)) {
+                signal.setWavelength(newSignal._Wavelength);
+            }
+        }
+    }
+
+    private void rebuildCurrent(Signal oldSignal, Signal newSignal) {
+        for (Signal signal : _Current) {
+            if (signal.isSameSignal(oldSignal)) {
+                signal.setWavelength(newSignal._Wavelength);
+            }
+        }
+    }
+
     public List<Signal> getCurrent() {
         return _Current;
     }

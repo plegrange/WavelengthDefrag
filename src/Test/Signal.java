@@ -50,6 +50,10 @@ public class Signal {
         return _Wavelength;
     }
 
+    public void setWavelength(double wavelength) {
+        this._Wavelength = wavelength;
+    }
+
     public int getSource() {
         return _Source.getID();
     }
@@ -59,7 +63,13 @@ public class Signal {
     }
 
     public boolean isSameSignal(Signal other) {
-        return this._Wavelength == other._Wavelength && this._Route == other._Route;
+        if (this._Wavelength == other._Wavelength) {
+            if (this._Route._Path == other._Route._Path) {
+                System.out.println();
+                return true;
+            }
+        }
+        return false;
     }
 
     public Path get_Route() {

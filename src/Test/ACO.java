@@ -64,6 +64,14 @@ public class ACO {
         this.table = table;
     }
 
+    public ArrayList<Node> getNodes() {
+        return nodes;
+    }
+
+    public ArrayList<Link> getLinks() {
+        return links;
+    }
+
     public void Reset() {
         time = 0;
         totalGen = 0;

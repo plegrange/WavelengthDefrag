@@ -17,6 +17,10 @@ public class Link {
         this._Loss = Loss;
     }
 
+    public void set_Reservations(ArrayList<Signal> reservations) {
+        this._Reservations = reservations;
+    }
+
     public boolean WavelengthAvailability(double wave) {
         for (Signal signal : _Reservations) {
             if (signal._Wavelength == wave || Math.abs(signal._Wavelength - wave) < 0.001) {
@@ -35,11 +39,11 @@ public class Link {
         return _Reservations;
     }
 
-    public Node get_A(){
+    public Node get_A() {
         return _A;
     }
 
-    public Node get_B(){
+    public Node get_B() {
         return _B;
     }
 

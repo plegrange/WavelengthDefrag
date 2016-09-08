@@ -14,7 +14,7 @@ public class GeneticAlgorithm {
     LightpathManager lightpathManager;
     LinkTableManager linkTableManager;
     int P = 100;
-    int alpha = P / 4;
+    int alpha = 25;
     List<LinkTable> chromosomes;
 
     public GeneticAlgorithm(LightpathManager lightpathManager) {
@@ -30,7 +30,7 @@ public class GeneticAlgorithm {
         initializePopulation();
         //testPopulation();
         System.out.println(fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 200; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();

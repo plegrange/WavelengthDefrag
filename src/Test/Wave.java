@@ -22,6 +22,10 @@ public class Wave {
         Destination = r._Path.getLast()._ID;
     }
 
+    public void setWavelength(double wavelength) {
+        this.Wavelength = wavelength;
+    }
+
     public void Success() {
         Success++;
     }
