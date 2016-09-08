@@ -17,4 +17,39 @@ public class LinkTable {
         this.linkIDs = linkIDs;
         this.table = table;
     }
+
+    public void replaceWavelength(double old, double newWav) {
+        for (double wavelength : wavelengths) {
+            if (wavelength == old) {
+                wavelengths.remove(wavelength);
+                addWavelength(newWav);
+                break;
+            }
+        }
+    }
+
+    private void addWavelength(double newWavelength) {
+        if (wavelengths.size() == 0) {
+            wavelengths.add(newWavelength);
+        } else if (wavelengths.size() == 1) {
+            if (wavelengths.get(0) > newWavelength)
+                wavelengths.add(0, newWavelength);
+            else
+                wavelengths.add(1, newWavelength);
+        } else {
+            for (int i = 0; i < wavelengths.size() - 1; i++) {
+                double left = wavelengths.get(i);
+                double right = wavelengths.get(i + 1);
+                if (newWavelength < left) {
+                    wavelengths.add(i, newWavelength);
+                    return;
+                } else if (newWavelength < right) {
+                    wavelengths.add(i + 1, newWavelength);
+                    return;
+                }
+            }
+            wavelengths.add(newWavelength);
+        }
+
+    }
 }

@@ -10,25 +10,36 @@ public class Mutator {
     public Mutator() {
     }
 
+    private double mutationRate = 0.4;
+
     public LinkTable mutateLightpaths(LinkTable linkTable) {
         List<Lightpath> lightpaths = linkTable.lightPaths;
-        List<Double> wavelengths = linkTable.wavelengths;
         Random random = new Random();
-        Lightpath lightpath = lightpaths.remove(random.nextInt(lightpaths.size()));
-        wavelengths.remove(lightpath.wavelength);
-        lightpath.wavelength = getAvailableWavlength(wavelengths);
-        lightpaths.add(lightpath);
+        for (Lightpath lightpath : lightpaths) {
+            if (random.nextDouble() < mutationRate) {
+                double old = lightpath.wavelength;
+                lightpath.wavelength = getAvailableWavelength(1200, 1800, linkTable.wavelengths);
+                linkTable.replaceWavelength(old, lightpath.wavelength);
+            }
+        }
         LinkTableManager linkTableManager = new LinkTableManager(lightpaths);
         return linkTableManager.buildInitial();
     }
 
-    private double getAvailableWavlength(List<Double> wavelengths) {
-        double min = 1200, max = 1800.00;
+    private double getAvailableWavelength(double min, double max, List<Double> wavelengths) {
         Random random = new Random();
-        double wavelength;
+        double value;
         do {
-            wavelength = min + (max - min) * random.nextDouble();
-        } while (wavelengths.contains(wavelength));
-        return wavelength;
+            value = min + (max - min) * random.nextDouble();
+        } while (!isAvailable(value, wavelengths));
+        return value;
+    }
+
+    private boolean isAvailable(double wavelength, List<Double> wavelengths) {
+        for (Double wav : wavelengths) {
+            if (wav == wavelength)
+                return false;
+        }
+        return true;
     }
 }

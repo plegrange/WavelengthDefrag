@@ -2,7 +2,6 @@ package Defragmentation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by FuBaR on 8/30/2016.
@@ -15,32 +14,42 @@ public class GeneticAlgorithm {
     LightpathManager lightpathManager;
     LinkTableManager linkTableManager;
     int P = 100;
-    int alpha = P / 10;
+    int alpha = P / 4;
     List<LinkTable> chromosomes;
 
     public GeneticAlgorithm(LightpathManager lightpathManager) {
         this.lightpathManager = lightpathManager;
     }
 
-    public LinkTable run() {
+    public LinkTable run(LinkTable linkTableInitial) {
         mutator = new Mutator();
         selector = new Selector();
         crosser = new Crosser();
         fitnessTester = new FitnessTester();
 
         initializePopulation();
-        testPopulation();
+        //testPopulation();
+        System.out.println(fitnessTester.testLinkTableFitness(linkTableInitial));
         for (int i = 0; i < 100; i++) {
             //System.out.println(i);
-            crossOver();
+            List<LinkTable> tempList = crossOver();
             //testPopulation();
-            mutate();
+            tempList = mutate(tempList);
             //testPopulation();
+            chromosomes = merge(chromosomes, tempList);
             selectNewPopulation();
             //testPopulation();
+            LinkTable best = selector.selectBest(chromosomes, fitnessTester);
+            System.out.println(i+" -> "+fitnessTester.testLinkTableFitness(best));
         }
-        testPopulation();
+        //testPopulation();
         return selector.selectBest(chromosomes, fitnessTester);
+    }
+
+    private List<LinkTable> merge(List<LinkTable> A, List<LinkTable> B) {
+        while (B.size() > 0)
+            A.add(B.remove(0));
+        return A;
     }
 
     private void selectNewPopulation() {
@@ -58,26 +67,14 @@ public class GeneticAlgorithm {
         chromosomes = newPopulation;
     }
 
-    private void mutate() {
-        Random random = new Random();
-        List<LinkTable> mutationList = new ArrayList<>();
-        for (int i = 0; i < P; i++) {
-            if (random.nextDouble() >= 0) {
-                LinkTable selected = selector.selectBest(chromosomes, fitnessTester);
-                chromosomes.remove(selected);
-                mutationList.add(mutator.mutateLightpaths(selected));
-            } else {
-                LinkTable selected = selector.selectRandom(chromosomes);
-                chromosomes.remove(selected);
-                mutationList.add(mutator.mutateLightpaths(selected));
-            }
+    private List<LinkTable> mutate(List<LinkTable> list) {
+        for (LinkTable linkTable : list) {
+            mutator.mutateLightpaths(linkTable);
         }
-        while (mutationList.size() > 0) {
-            chromosomes.add(mutationList.remove(0));
-        }
+        return list;
     }
 
-    private void crossOver() {
+    private List<LinkTable> crossOver() {
         List<LinkTable> newPop = new ArrayList<>();
         for (int i = 0; i < P; i++) {
             LinkTable A = selector.selectRandom(chromosomes);
@@ -86,8 +83,7 @@ public class GeneticAlgorithm {
             LinkTable child = linkTableManager.buildInitial();
             newPop.add(child);
         }
-        while (newPop.size() > 0)
-            chromosomes.add(newPop.remove(0));
+        return newPop;
     }
 
 

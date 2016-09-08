@@ -12,6 +12,7 @@ public class Crosser {
 
     public List<Lightpath> crossover(List<Lightpath> A, List<Lightpath> B) {
         List<Lightpath> newLightpaths = A;
+        if (A.equals(B)) return newLightpaths;
         for (Lightpath lightpath : newLightpaths) {
             lightpath.wavelength = selectWavelength(getLightpath(A, lightpath.id), getLightpath(B, lightpath.id), newLightpaths);
         }
@@ -28,17 +29,17 @@ public class Crosser {
 
     private double selectWavelength(Lightpath a, Lightpath b, List<Lightpath> lightpaths) {
         Random random = new Random();
-        if (random.nextDouble() >= 0.5) {
-            if (isAvailable(a.wavelength, lightpaths))
-                return a.wavelength;
-            else
-                return b.wavelength;
-        } else {
-            if (isAvailable(b.wavelength, lightpaths))
-                return b.wavelength;
-            else
-                return a.wavelength;
+
+        double wavelength = (a.wavelength + b.wavelength) / 2.00;
+        if (!isAvailable(wavelength, lightpaths)) {
+            do {
+                if (a.wavelength < b.wavelength)
+                    wavelength = a.wavelength + (b.wavelength - a.wavelength) * random.nextDouble();
+                else
+                    wavelength = b.wavelength + (a.wavelength - b.wavelength) * random.nextDouble();
+            } while (!isAvailable(wavelength, lightpaths));
         }
+        return wavelength;
     }
 
     private boolean isAvailable(double wavelength, List<Lightpath> lightpaths) {
