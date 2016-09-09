@@ -3,7 +3,9 @@ package Test;
 import Defragmentation.Defrag;
 import Defragmentation.NetworkRebuilder;
 import ExcelWriter.WriteExcel;
+import jxl.write.WriteException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -25,8 +27,8 @@ public class Test {
     int NrSignalsPerTime;
     double createWaveProb;
     int noWaves;
-    WriteExcel writer = new WriteExcel("report.xls");
-
+    WriteExcel writer1 = new WriteExcel("report1.xls");
+    WriteExcel writer2 = new WriteExcel("report2.xls");
 
     public Test(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table, ACO ac, int s1, int s2) {
         this.ac = ac;
@@ -38,7 +40,13 @@ public class Test {
         exclude = new ArrayList<Node>();
 
         long startTime = System.currentTimeMillis();
-        RunTest();
+        try {
+            RunTest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
         long endTime = System.currentTimeMillis();
         System.out.println("Time taken : " + (endTime - startTime) + " milliseconds");
 
@@ -66,7 +74,7 @@ public class Test {
 
     Defrag defrag;
 
-    public void RunTest() {
+    public void RunTest() throws IOException, WriteException {
         table.LoadNetwork();
         ac.BuildCandidates();
         ac.Reset();
@@ -85,11 +93,25 @@ public class Test {
                     e.printStackTrace();
                 }
             }*/
-            if (ac.time % 100 == 0 && !defragged && ac.total > 0) {
+            if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
+                try {
+                    writer1.write(links);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
                 defrag = new Defrag(nodes);
-                //defragged = true;
+                defragged = true;
                 rebuildNetwork();
                 System.out.println("Defragged");
+                try {
+                    writer2.write(links);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
             }
             System.out.println(ac.time);
             //counter++;

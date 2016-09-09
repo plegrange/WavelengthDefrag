@@ -20,7 +20,7 @@ public class FitnessTester {
                 if (linkWavelengths.size() == 0) {
 
                 } else
-                    fragmentation += blockingProbability(linkWavelengths);
+                    fragmentation += calculateFragmentation(linkWavelengths);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();

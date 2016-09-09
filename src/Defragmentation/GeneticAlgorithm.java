@@ -29,8 +29,8 @@ public class GeneticAlgorithm {
         LinkTable best = linkTableInitial;
         initializePopulation();
         //testPopulation();
-        //System.out.println(fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 300; i++) {
+        System.out.println("Initial: "+fitnessTester.testLinkTableFitness(linkTableInitial));
+        for (int i = 0; i < 1000; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();

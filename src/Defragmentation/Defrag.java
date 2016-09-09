@@ -24,8 +24,8 @@ public class Defrag {
         linkTableManager = new LinkTableManager(lightpaths);
         LinkTable linkTableInitial = linkTableManager.buildInitial();
 
-       // heuristicAlgorithm = new HeuristicAlgorithm();
-        //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
+      // heuristicAlgorithm = new HeuristicAlgorithm();
+       // newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
         geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
         newLinkTable = geneticAlgorithm.run(linkTableInitial);
     }
