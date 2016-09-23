@@ -24,24 +24,24 @@ public class Defrag {
         linkTableManager = new LinkTableManager(lightpaths);
         LinkTable linkTableInitial = linkTableManager.buildInitial();
 
-      // heuristicAlgorithm = new HeuristicAlgorithm();
-       // newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
+        //heuristicAlgorithm = new HeuristicAlgorithm();
+        //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
         geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
         newLinkTable = geneticAlgorithm.run(linkTableInitial);
     }
 
     public List<Signal> getNewSignals() {
         List<Signal> signals = new ArrayList<>();
-        for (Lightpath lightpath : newLinkTable.lightPaths) {
-            signals.add(lightpath.signal);
+        for (Lightpath lightpath : newLinkTable.getLightPaths()) {
+            signals.add(lightpath.getNewSignal());
         }
         return signals;
     }
 
     public List<Signal> getOldSignals() {
         List<Signal> signals = new ArrayList<>();
-        for (Lightpath lightpath : newLinkTable.lightPaths) {
-            signals.add(lightpath.getNewSignal());
+        for (Lightpath lightpath : newLinkTable.getLightPaths()) {
+            signals.add(lightpath.getSignal());
         }
         return signals;
     }

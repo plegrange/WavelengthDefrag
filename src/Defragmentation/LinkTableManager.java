@@ -18,7 +18,7 @@ public class LinkTableManager {
         List<String> linkIDs = new ArrayList<>();
         wavelengths = addWavelength(wavelengths, 1200.00);
         for (Lightpath lightpath : lightpaths) {
-            wavelengths = addWavelength(wavelengths, lightpath.wavelength);
+            wavelengths = addWavelength(wavelengths, lightpath.getWavelength());
             linkIDs = addLinkIDs(linkIDs, lightpath.linkIDs);
         }
         wavelengths = addWavelength(wavelengths, 1800.00);
@@ -33,7 +33,7 @@ public class LinkTableManager {
         for (Lightpath lightpath : lightpaths) {
             for (String s : lightpath.linkIDs) {
                 i = getLinkIndex(s, linkIDs);
-                j = getWavelengthIndex(lightpath.wavelength, wavelengths);
+                j = getWavelengthIndex(lightpath.getWavelength(), wavelengths);
                 table[i][j] = lightpath.id;
             }
         }

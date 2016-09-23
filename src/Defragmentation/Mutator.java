@@ -10,16 +10,16 @@ public class Mutator {
     public Mutator() {
     }
 
-    private double mutationRate = 0.1;
+    private double mutationRate = 0.5;
 
     public LinkTable mutateLightpaths(LinkTable linkTable) {
-        List<Lightpath> lightpaths = linkTable.lightPaths;
+        List<Lightpath> lightpaths = linkTable.getLightPaths();
         Random random = new Random();
         for (Lightpath lightpath : lightpaths) {
             if (random.nextDouble() < mutationRate) {
-                double old = lightpath.wavelength;
-                lightpath.wavelength = getAvailableWavelength(1200, 1800, linkTable.wavelengths);
-                linkTable.replaceWavelength(old, lightpath.wavelength);
+                double old = lightpath.getWavelength();
+                lightpath.setWavelength(getAvailableWavelength(1200, 1800, linkTable.wavelengths));
+                linkTable.replaceWavelength(old, lightpath.getWavelength());
             }
         }
         LinkTableManager linkTableManager = new LinkTableManager(lightpaths);

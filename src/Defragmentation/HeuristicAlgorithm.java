@@ -20,13 +20,13 @@ public class HeuristicAlgorithm {
         double fitness = fitnessTester.testLinkTableFitness(linkTable);
         System.out.println(fitness);
         Random random = new Random();
-        List<Lightpath> lightpaths = linkTable.lightPaths;
+        List<Lightpath> lightpaths = linkTable.getLightPaths();
         List<Double> wavelengths = linkTable.wavelengths;
         LinkTable newLinkTable = null;
-        for (int i = 0; i < linkTable.lightPaths.size(); i++) {
+        for (int i = 0; i < linkTable.getLightPaths().size(); i++) {
             Lightpath lightPath = lightpaths.remove(random.nextInt(lightpaths.size()));
-            wavelengths.remove(lightPath.wavelength);
-            lightPath.wavelength = getLargestGap(wavelengths);
+            wavelengths.remove(lightPath.getWavelength());
+            lightPath.setWavelength(getSmallestAvailableSpace(wavelengths));
             lightpaths.add(lightPath);
             LinkTableManager linkTableManager = new LinkTableManager(lightpaths);
             newLinkTable = linkTableManager.buildInitial();
@@ -37,6 +37,20 @@ public class HeuristicAlgorithm {
         return newLinkTable;
     }
 
+    private double firstFit(List<Double> wavelengths) {
+        double minSeparation = 0.5;
+        double point1, point2;
+        Random random = new Random();
+        for (int i = 0; i < wavelengths.size() - 1; i++) {
+            point1 = wavelengths.get(i);
+            point2 = wavelengths.get(i + 1);
+            double separation = point2 - point1;
+            if (separation > minSeparation) {
+                return point1 + (point2 - point1) * random.nextDouble();
+            }
+        }
+        return -1;
+    }
 
     private double getLargestGap(List<Double> wavelengths) {
         double largestGapMin = 0, largestGapMax = 0;

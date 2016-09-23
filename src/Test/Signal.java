@@ -25,6 +25,10 @@ public class Signal {
         this._Hop = 0;
     }
 
+    public Signal cloneSignal(){
+        return new Signal(this._Table, this._Source, this._Destination, this._Intensity, this._Wavelength);
+    }
+
     public double GetVisitedLength() {
         double length = 0.0;
         Link temp;
@@ -64,7 +68,7 @@ public class Signal {
 
     public boolean isSameSignal(Signal other) {
         if (this._Wavelength == other._Wavelength) {
-            if (this._Route._Path == other._Route._Path) {
+            if (this._Route._Path.equals(other._Route._Path)) {
                 return true;
             }
         }

@@ -35,62 +35,82 @@ public class Node {
     public void rebuild(Signal oldSignal, Signal newSignal) {
         rebuildCurrent(oldSignal, newSignal);
         rebuildArriving(oldSignal, newSignal);
-        rebuildArriving(oldSignal, newSignal);
+        rebuildAckArriving(oldSignal, newSignal);
         rebuildAckTraversing(oldSignal, newSignal);
         rebuildAckSend(oldSignal, newSignal);
         rebuildWaves(oldSignal, newSignal);
     }
 
     private void rebuildWaves(Signal oldSignal, Signal newSignal) {
+        ArrayList<Wave> waves = new ArrayList<Wave>();
         for (Wave wave : _Waves) {
-            if (wave.getWavelength() == oldSignal._Wavelength && wave.getPath() == oldSignal._Route) {
+            if (wave.getWavelength() == oldSignal._Wavelength && wave.getPath().equals(oldSignal._Route)) {
                 wave.setWavelength(newSignal._Wavelength);
-            }
+
+            }waves.add(wave);
         }
+        _Waves = waves;
     }
 
     private void rebuildAckSend(Signal oldSignal, Signal newSignal) {
-        for (Ack ack : _AckSend) {
+        Queue<Ack> ackSend = new LinkedList<Ack>();
+        for (int i = 0; i < _AckSend.size(); i++) {
+            Ack ack = _AckSend.remove();
             Signal signal = ack._Signal;
             if (signal.isSameSignal(oldSignal)) {
                 signal.setWavelength(newSignal._Wavelength);
-            }
-            ack._Signal = signal;
+                ackSend.add(new Ack(signal));
+            } else _AckSend.add(ack);
+
         }
+        _AckSend = ackSend;
     }
 
     private void rebuildAckArriving(Signal oldSignal, Signal newSignal) {
-        for (Ack ack : _AckArriving) {
+        Queue<Ack> ackArriving = new LinkedList<Ack>();
+        for (int i = 0; i < _AckArriving.size(); i++) {
+            Ack ack = _AckArriving.remove();
             Signal signal = ack._Signal;
             if (signal.isSameSignal(oldSignal)) {
                 signal.setWavelength(newSignal._Wavelength);
-            }
-            ack._Signal = signal;
+                ackArriving.add(new Ack(signal));
+            } else _AckArriving.add(ack);
+
         }
+        _AckArriving = ackArriving;
     }
 
     private void rebuildAckTraversing(Signal oldSignal, Signal newSignal) {
+        ArrayList<Signal> ackTrav = new ArrayList<Signal>();
         for (Signal signal : _AckTraversing) {
             if (signal.isSameSignal(oldSignal)) {
                 signal.setWavelength(newSignal._Wavelength);
-            }
+
+            }ackTrav.add(signal);
         }
+        _AckTraversing = ackTrav;
     }
 
     private void rebuildArriving(Signal oldSignal, Signal newSignal) {
+        ArrayList<Signal> arriving = new ArrayList<Signal>();
         for (Signal signal : _Arriving) {
             if (signal.isSameSignal(oldSignal)) {
                 signal.setWavelength(newSignal._Wavelength);
-            }
+                arriving.add(signal);
+            }arriving.add(signal);
         }
+        _Arriving = arriving;
     }
 
     private void rebuildCurrent(Signal oldSignal, Signal newSignal) {
+        ArrayList<Signal> cur = new ArrayList<Signal>();
         for (Signal signal : _Current) {
             if (signal.isSameSignal(oldSignal)) {
                 signal.setWavelength(newSignal._Wavelength);
-            }
+                cur.add(signal);
+            } cur.add(signal);
         }
+        _Current = cur;
     }
 
     public List<Signal> getCurrent() {

@@ -27,8 +27,8 @@ public class Test {
     int NrSignalsPerTime;
     double createWaveProb;
     int noWaves;
-    WriteExcel writer1 = new WriteExcel("report1.xls");
-    WriteExcel writer2 = new WriteExcel("report2.xls");
+    WriteExcel writer1 = new WriteExcel("initialPlot.xls");
+    WriteExcel writer2 = new WriteExcel("finalPlot.xls");
 
     public Test(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table, ACO ac, int s1, int s2) {
         this.ac = ac;
@@ -144,7 +144,9 @@ public class Test {
         NetworkRebuilder networkRebuilder = new NetworkRebuilder(oldSignals, newSignals);
         nodes = networkRebuilder.rebuildNodes(nodes);
         links = networkRebuilder.rebuildLinks(links);
-        ac.nodes = networkRebuilder.rebuildACONodes(ac);
-        ac.links = networkRebuilder.rebuildACOLinks(ac);
+        ac.setNodes(nodes);
+        //ac.nodes = networkRebuilder.rebuildACONodes(ac);
+        ac.setLinks(links);
+        //ac.links = networkRebuilder.rebuildACOLinks(ac);
     }
 }

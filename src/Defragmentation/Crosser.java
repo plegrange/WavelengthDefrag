@@ -10,11 +10,13 @@ public class Crosser {
     public Crosser() {
     }
 
-    public List<Lightpath> crossover(List<Lightpath> A, List<Lightpath> B) {
-        List<Lightpath> newLightpaths = A;
+    public List<Lightpath> crossover(LinkTable A, LinkTable B) {
+        List<Lightpath> newLightpaths = A.getLightPaths();
         if (A.equals(B)) return newLightpaths;
+        double fitnessA = fitnessTester.testLinkTableFitness(A);
+        double fitnessB = fitnessTester.testLinkTableFitness(B);
         for (Lightpath lightpath : newLightpaths) {
-            lightpath.wavelength = selectWavelength(getLightpath(A, lightpath.id), getLightpath(B, lightpath.id), newLightpaths);
+            lightpath.setWavelength(selectWavelength(getLightpath(A.getLightPaths(), lightpath.id), fitnessA, getLightpath(B.getLightPaths(), lightpath.id), fitnessB, newLightpaths));
         }
         return newLightpaths;
     }
@@ -27,16 +29,18 @@ public class Crosser {
         return null;
     }
 
-    private double selectWavelength(Lightpath a, Lightpath b, List<Lightpath> lightpaths) {
-        Random random = new Random();
+    FitnessTester fitnessTester = new FitnessTester();
 
-        double wavelength = (a.wavelength + b.wavelength) / 2.00;
+    private double selectWavelength(Lightpath a, double fitnessA, Lightpath b, double fitnessB, List<Lightpath> lightpaths) {
+        Random random = new Random();
+        if (a.getWavelength() == b.getWavelength()) return a.getWavelength();
+        double wavelength = fitnessA / (fitnessA + fitnessB) * a.getWavelength() + fitnessB / (fitnessA + fitnessB) * b.getWavelength();
         if (!isAvailable(wavelength, lightpaths)) {
             do {
-                if (a.wavelength < b.wavelength)
-                    wavelength = a.wavelength + (b.wavelength - a.wavelength) * random.nextDouble();
+                if (a.getWavelength() < b.getWavelength())
+                    wavelength = a.getWavelength() + (b.getWavelength() - a.getWavelength()) * random.nextDouble();
                 else
-                    wavelength = b.wavelength + (a.wavelength - b.wavelength) * random.nextDouble();
+                    wavelength = b.getWavelength() + (a.getWavelength() - b.getWavelength()) * random.nextDouble();
             } while (!isAvailable(wavelength, lightpaths));
         }
         return wavelength;
@@ -44,7 +48,7 @@ public class Crosser {
 
     private boolean isAvailable(double wavelength, List<Lightpath> lightpaths) {
         for (Lightpath lightpath : lightpaths) {
-            if (lightpath.wavelength == wavelength)
+            if (lightpath.getWavelength() == wavelength)
                 return false;
         }
         return true;

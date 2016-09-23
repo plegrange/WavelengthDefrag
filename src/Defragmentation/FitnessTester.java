@@ -19,13 +19,14 @@ public class FitnessTester {
                 List<Double> linkWavelengths = getLinkWavelengths(i, linkTable);
                 if (linkWavelengths.size() == 0) {
 
-                } else
+                } else {
                     fragmentation += calculateFragmentation(linkWavelengths);
+                }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return fragmentation / linkTable.linkIDs.size() * 100;
+        return fragmentation;
     }
 
     private List<Double> getLinkWavelengths(int i, LinkTable linkTable) {
@@ -46,21 +47,22 @@ public class FitnessTester {
         return linkWavelengths;
     }
 
-    private double blockingProbability(List<Double> linkWavelengths) {
-        double availableSlotBlocks = 0;
+    private double getShannonEnthropy(List<Double> linkWavelengths) {
+        double t = 0.01;
         double point1;
         double point2;
         double separation;
-        double minSpace = 2.00;
-        int collisionsDetected = 0;
+        double slotsF, slotsTotal = Math.round(600 / t);
+        double enthropy = 0;
         for (int i = 0; i < linkWavelengths.size() - 1; i++) {
             point1 = linkWavelengths.get(i);
             point2 = linkWavelengths.get(i + 1);
-            separation = point2 - point1;
-            if (separation > minSpace)
-                availableSlotBlocks++;
+            separation = (point2 - t) - (point1 + t);
+            slotsF = Math.toIntExact(Math.round(separation / t));
+            double temp = slotsF / slotsTotal * Math.log(slotsTotal / slotsF);
+            enthropy += temp;
         }
-        return 2.00 / (Math.pow((maxWavelength - minWavelength) / 4.00 + 1.00, 2) + Math.pow(availableSlotBlocks, 2));
+        return enthropy;
     }
 
     private double calculateFragmentation(List<Double> linkWavelengths) {

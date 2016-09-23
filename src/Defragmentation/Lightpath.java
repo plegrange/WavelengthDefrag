@@ -12,12 +12,11 @@ import java.util.List;
  * Created by FuBaR on 8/28/2016.
  */
 public class Lightpath {
-    double wavelength;
+    private double wavelength;
     Path route;
     String id;
-    Signal signal;
+    private Signal signal;
     List<String> linkIDs;
-    Signal newSignal;
 
     public Lightpath(Signal signal, String id) {
         this.signal = signal;
@@ -27,10 +26,30 @@ public class Lightpath {
         setLinkIDs();
     }
 
+    public Signal getSignal() {
+        return signal;
+    }
+
     public Signal getNewSignal() {
-        Signal newSignal = signal;
+        Signal newSignal = signal.cloneSignal();
         newSignal.setWavelength(this.wavelength);
         return newSignal;
+    }
+
+    public void setWavelength(double wavelength) {
+        this.wavelength = wavelength;
+    }
+
+    public double getWavelength() {
+        return wavelength;
+    }
+
+    public Lightpath cloneWithNewWavelength(double wavelength) {
+        Lightpath newLightPath = new Lightpath(this.signal, this.id);
+        newLightPath.setWavelength(wavelength);
+        newLightPath.route = this.route;
+        newLightPath.linkIDs = this.linkIDs;
+        return newLightPath;
     }
 
     private void setLinkIDs() {

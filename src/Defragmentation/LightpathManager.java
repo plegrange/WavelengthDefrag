@@ -52,9 +52,10 @@ public class LightpathManager {
     public List<Lightpath> getRandomLightpaths() {
         double min = 1200.00, max = 1800;
         SecureRandom random = new SecureRandom();
-        List<Lightpath> newLightpaths = lightPaths;
-        for (Lightpath lightpath : newLightpaths) {
-            lightpath.wavelength = min + (max - min) * random.nextDouble();
+        List<Lightpath> newLightpaths = new ArrayList<>();
+        for (Lightpath lightpath : lightPaths) {
+            Lightpath newLightPath = lightpath.cloneWithNewWavelength(min + (max - min) * random.nextDouble());
+            newLightpaths.add(newLightPath);
         }
         return newLightpaths;
     }

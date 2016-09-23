@@ -17,6 +17,15 @@ public class NetworkRebuilder {
     public NetworkRebuilder(List<Signal> oldSignals, List<Signal> newSignals) {
         this.oldSignals = oldSignals;
         this.newSignals = newSignals;
+        test();
+    }
+
+    private boolean test(){
+        for(int i = 0; i < oldSignals.size(); i++){
+            if(!oldSignals.get(i).equals(newSignals.get(i)))
+                return true;
+        }
+        return false;
     }
 
     public ArrayList<Node> rebuildNodes(ArrayList<Node> nodes) {
