@@ -25,8 +25,13 @@ public class Signal {
         this._Hop = 0;
     }
 
-    public Signal cloneSignal(){
-        return new Signal(this._Table, this._Source, this._Destination, this._Intensity, this._Wavelength);
+    public Signal cloneSignal() {
+        Signal newSignal = new Signal(this._Table, this._Source, this._Destination, this._Intensity, this._Wavelength);
+        newSignal._Route = this._Route;
+        newSignal._Next = this._Next;
+        newSignal._Hop = this._Hop;
+        newSignal._Visited = this._Visited;
+        return newSignal;
     }
 
     public double GetVisitedLength() {

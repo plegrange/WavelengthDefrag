@@ -1,6 +1,6 @@
 package Defragmentation;
 
-import Test.Node;
+import Test.Link;
 import Test.Signal;
 
 import java.math.BigInteger;
@@ -12,13 +12,13 @@ import java.util.List;
  * Created by FuBaR on 8/28/2016.
  */
 public class LightpathManager {
-    List<Node> nodes;
+    ArrayList<Link> links;
     List<Signal> signalsAll;
     List<Lightpath> lightPaths;
     private SecureRandom random;
 
-    public LightpathManager(List<Node> nodes) {
-        this.nodes = nodes;
+    public LightpathManager(ArrayList<Link> links) {
+        this.links = links;
     }
 
     public List<Lightpath> build() {
@@ -37,8 +37,8 @@ public class LightpathManager {
     }
 
     private void extractSignals() {
-        for (Node n : nodes) {
-            List<Signal> currentSignals = n.getCurrent();
+        for (Link link : links) {
+            ArrayList<Signal> currentSignals = link.get_Reservations();
             for (Signal s : currentSignals) {
                 addSignal(s);
             }
@@ -46,7 +46,7 @@ public class LightpathManager {
     }
 
     private void addSignal(Signal signal) {
-        signalsAll.add(signal);
+        if (!signalsAll.contains(signal)) signalsAll.add(signal);
     }
 
     public List<Lightpath> getRandomLightpaths() {

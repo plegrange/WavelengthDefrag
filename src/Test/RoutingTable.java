@@ -25,6 +25,14 @@ public class RoutingTable {
         lRelease.clear();
     }
 
+    public void rebuildTable() {
+        ClearTable();
+        for (Link link : _Links) {
+            AddLink(link, link._A._ID, link._B._ID);
+            AddLink(link, link._B._ID, link._A._ID);
+        }
+    }
+
     public void ClearTable() {
         for (int i = 0; i < 100; i++) {
             for (int j = 0; j < 100; j++) {
@@ -86,7 +94,9 @@ public class RoutingTable {
     public void ReleaseLink(Signal signal, int A, int B) {
         Link temp = GetLink(A, B);
         //add to list
-
+        if(temp == null){
+            System.out.println();
+        }
         temp._Reservations.remove(signal);
         if (temp._Reservations.isEmpty()) {
             _Reservations.remove(temp);

@@ -1,7 +1,6 @@
 package Test;
 
 import Defragmentation.Defrag;
-import Defragmentation.NetworkRebuilder;
 import ExcelWriter.WriteExcel;
 import jxl.write.WriteException;
 
@@ -93,26 +92,8 @@ public class Test {
                     e.printStackTrace();
                 }
             }*/
-            if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
-                try {
-                    writer1.write(links);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (WriteException e) {
-                    e.printStackTrace();
-                }
-                defrag = new Defrag(nodes);
-                defragged = true;
-                rebuildNetwork();
-                System.out.println("Defragged");
-                try {
-                    writer2.write(links);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (WriteException e) {
-                    e.printStackTrace();
-                }
-            }
+
+
             System.out.println(ac.time);
             //counter++;
             if (ac.totalGen < totalSignals) {
@@ -123,6 +104,21 @@ public class Test {
                 }
             }
             ac.TimeStep();
+            if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
+                try {
+                    writer1.write(links);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
+                defrag = new Defrag(links);
+                defragged = true;
+                rebuildNetwork();
+                System.out.println("Defragged");
+
+                //ac.BuildCandidates();
+            }
         }
 
 
@@ -141,12 +137,10 @@ public class Test {
     private void rebuildNetwork() {
         List<Signal> oldSignals = defrag.getOldSignals();
         List<Signal> newSignals = defrag.getNewSignals();
-        NetworkRebuilder networkRebuilder = new NetworkRebuilder(oldSignals, newSignals);
-        nodes = networkRebuilder.rebuildNodes(nodes);
-        links = networkRebuilder.rebuildLinks(links);
-        ac.setNodes(nodes);
-        //ac.nodes = networkRebuilder.rebuildACONodes(ac);
-        ac.setLinks(links);
-        //ac.links = networkRebuilder.rebuildACOLinks(ac);
+        for (Node node : nodes) {
+            for (int i = 0; i < oldSignals.size(); i++) {
+                node.rebuild(oldSignals.get(i), newSignals.get(i));
+            }
+        }
     }
 }

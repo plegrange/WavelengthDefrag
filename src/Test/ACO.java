@@ -49,14 +49,6 @@ public class ACO {
     long sourceblocked = 0;
     int WPD = 0;
 
-    public void setNodes(ArrayList<Node> nodes) {
-        this.nodes = nodes;
-    }
-
-    public void setLinks(ArrayList<Link> links) {
-        this.links = links;
-    }
-
     ACO(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table) {
         hops = 0;
         time = 0;

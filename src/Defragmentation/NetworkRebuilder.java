@@ -1,9 +1,6 @@
 package Defragmentation;
 
-import Test.ACO;
-import Test.Link;
-import Test.Node;
-import Test.Signal;
+import Test.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,16 +10,31 @@ import java.util.List;
  */
 public class NetworkRebuilder {
     List<Signal> oldSignals, newSignals;
-
-    public NetworkRebuilder(List<Signal> oldSignals, List<Signal> newSignals) {
+    public ArrayList<Node> initialNodes, finalNodes;
+    public ArrayList<Link> initalLinks, finalLinks;
+    public ACO aco, newACO;
+    public RoutingTable table;
+    public NetworkRebuilder(List<Signal> oldSignals, List<Signal> newSignals, ArrayList<Node> nodes, ArrayList<Link> links, ACO aco) {
         this.oldSignals = oldSignals;
         this.newSignals = newSignals;
+        this.initialNodes = nodes;
+        this.initalLinks = links;
+        this.aco = aco;
         test();
     }
 
-    private boolean test(){
-        for(int i = 0; i < oldSignals.size(); i++){
-            if(!oldSignals.get(i).equals(newSignals.get(i)))
+    public void rebuild() {
+        finalNodes = rebuildNodes(initialNodes);
+        finalLinks = rebuildLinks(initalLinks);
+        //newACO = aco;
+        //newACO.setNodes(finalNodes);
+        //newACO.setLinks(finalLinks);
+        //table = new RoutingTable(finalNodes, finalLinks);
+    }
+
+    private boolean test() {
+        for (int i = 0; i < oldSignals.size(); i++) {
+            if (!oldSignals.get(i).equals(newSignals.get(i)))
                 return true;
         }
         return false;

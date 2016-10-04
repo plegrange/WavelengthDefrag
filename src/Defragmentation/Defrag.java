@@ -1,9 +1,11 @@
 package Defragmentation;
 
 import ExcelWriter.LinkTableOutput;
-import Test.Node;
+import Test.Link;
 import Test.Signal;
+import jxl.write.WriteException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +20,33 @@ public class Defrag {
     HeuristicAlgorithm heuristicAlgorithm;
     LinkTable newLinkTable;
 
-    public Defrag(List<Node> nodes) {
-        lightpathManager = new LightpathManager(nodes);
+    public Defrag(ArrayList<Link> links) {
+        lightpathManager = new LightpathManager(links);
         List<Lightpath> lightpaths = lightpathManager.build();
         linkTableManager = new LinkTableManager(lightpaths);
         LinkTable linkTableInitial = linkTableManager.buildInitial();
+        try {
+            linkTableOutput.write(linkTableInitial);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
+       // heuristicAlgorithm = new HeuristicAlgorithm();
+       //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
 
-        //heuristicAlgorithm = new HeuristicAlgorithm();
-        //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
         geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
+
+
         newLinkTable = geneticAlgorithm.run(linkTableInitial);
+
+        try {
+            outputfinal.write(newLinkTable);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Signal> getNewSignals() {
