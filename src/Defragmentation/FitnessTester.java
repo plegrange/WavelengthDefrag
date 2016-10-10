@@ -52,7 +52,7 @@ public class FitnessTester {
         double point1;
         double point2;
         double separation;
-        double slotsF, slotsTotal = Math.round(600 / t);
+        double slotsF, slotsTotal = Math.round(250 / t);
         double enthropy = 0;
         for (int i = 0; i < linkWavelengths.size() - 1; i++) {
             point1 = linkWavelengths.get(i);
@@ -87,6 +87,6 @@ public class FitnessTester {
                     freeMax = separation;
             }
         }
-        return (free - freeMax) / free + collisionsDetected / linkWavelengths.size();
+        return (free - freeMax) / free + (0.1 * collisionsDetected / linkWavelengths.size());
     }
 }

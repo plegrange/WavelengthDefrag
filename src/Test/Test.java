@@ -82,6 +82,7 @@ public class Test {
         ac.WPD = Math.round(noWaves / nodes.size());
         boolean defragged = false;
         int counter = 0;
+        List<Float> timeStepSuccesses = new ArrayList<>();
         while ((ac.total < totalSignals) || ac.Traffic() || ac.Acks()) {
             /*if(ac.total == totalSignals*0.5){
                 try {
@@ -103,7 +104,7 @@ public class Test {
                     GenerateTraffic(NrSignalsPerTime);
                 }
             }
-            ac.TimeStep();
+            timeStepSuccesses.add(ac.TimeStep());
             if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
                 try {
                     writer1.write(links);
@@ -118,6 +119,13 @@ public class Test {
                 System.out.println("Defragged");
 
                 //ac.BuildCandidates();
+                try {
+                    writer2.write(links);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

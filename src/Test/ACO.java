@@ -89,10 +89,13 @@ public class ACO {
         table._Reservations.clear();
     }
 
-    public void TimeStep() {
+    public float TimeStep() {
+        float successPerTimeStep = success;
         ProcessAcknowledgements();
+        successPerTimeStep = success - successPerTimeStep;
         NetworkSend();
         time++;
+        return successPerTimeStep;
     }
 
     public void display() {

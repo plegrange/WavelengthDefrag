@@ -13,7 +13,7 @@ public class GeneticAlgorithm {
     FitnessTester fitnessTester;
     LightpathManager lightpathManager;
     //LinkTableManager linkTableManager;
-    int P = 100;
+    int P = 50;
     int alpha = 20;
     List<LinkTable> chromosomes;
 
