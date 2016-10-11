@@ -32,12 +32,10 @@ public class Defrag {
         } catch (WriteException e) {
             e.printStackTrace();
         }
-       // heuristicAlgorithm = new HeuristicAlgorithm();
+       //heuristicAlgorithm = new HeuristicAlgorithm();
        //newLinkTable = heuristicAlgorithm.repack(linkTableInitial);
 
         geneticAlgorithm = new GeneticAlgorithm(lightpathManager);
-
-
         newLinkTable = geneticAlgorithm.run(linkTableInitial);
 
         try {

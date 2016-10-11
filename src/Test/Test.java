@@ -1,6 +1,7 @@
 package Test;
 
 import Defragmentation.Defrag;
+import ExcelWriter.SuccessOutput;
 import ExcelWriter.WriteExcel;
 import jxl.write.WriteException;
 
@@ -28,6 +29,7 @@ public class Test {
     int noWaves;
     WriteExcel writer1 = new WriteExcel("initialPlot.xls");
     WriteExcel writer2 = new WriteExcel("finalPlot.xls");
+    SuccessOutput successOutput = new SuccessOutput("successes.xls");
 
     public Test(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table, ACO ac, int s1, int s2) {
         this.ac = ac;
@@ -82,7 +84,7 @@ public class Test {
         ac.WPD = Math.round(noWaves / nodes.size());
         boolean defragged = false;
         int counter = 0;
-        List<Float> timeStepSuccesses = new ArrayList<>();
+        List<Double> timeStepSuccesses = new ArrayList<>();
         while ((ac.total < totalSignals) || ac.Traffic() || ac.Acks()) {
             /*if(ac.total == totalSignals*0.5){
                 try {
@@ -104,7 +106,7 @@ public class Test {
                     GenerateTraffic(NrSignalsPerTime);
                 }
             }
-            timeStepSuccesses.add(ac.TimeStep());
+            timeStepSuccesses.add(ac.TimeStep()/NrSignalsPerTime);
             if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
                 try {
                     writer1.write(links);
@@ -126,6 +128,7 @@ public class Test {
                 } catch (WriteException e) {
                     e.printStackTrace();
                 }
+                NrSignalsPerTime = NrSignalsPerTime * 2;
             }
         }
 
@@ -137,6 +140,11 @@ public class Test {
         System.out.println("Done");
         //ac.display();
         //ac.Duplicate();
+        try {
+            successOutput.write(timeStepSuccesses);
+        } catch (WriteException e) {
+            e.printStackTrace();
+        }
         ac.displaySuccess();
 
 

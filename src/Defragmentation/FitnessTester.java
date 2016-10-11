@@ -70,7 +70,7 @@ public class FitnessTester {
         // output : fragmentation coefficient
         double freeMax = -999;
         double free = 0;
-        double t = 0.1;
+        double t = 0.2;
         double point1;
         double point2;
         double separation;
@@ -87,6 +87,6 @@ public class FitnessTester {
                     freeMax = separation;
             }
         }
-        return (free - freeMax) / free + (0.1 * collisionsDetected / linkWavelengths.size());
+        return (free - freeMax) / free + (collisionsDetected / linkWavelengths.size());
     }
 }

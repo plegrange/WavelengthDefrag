@@ -26,7 +26,7 @@ public class HeuristicAlgorithm {
         for (int i = 0; i < linkTable.getLightPaths().size(); i++) {
             Lightpath lightPath = lightpaths.remove(random.nextInt(lightpaths.size()));
             wavelengths.remove(lightPath.getWavelength());
-            lightPath.setWavelength(getSmallestAvailableSpace(wavelengths));
+            lightPath.setWavelength(getLargestGap(wavelengths));
             lightpaths.add(lightPath);
             LinkTableManager linkTableManager = new LinkTableManager(lightpaths);
             newLinkTable = linkTableManager.buildInitial();

@@ -24,7 +24,7 @@ public class WriteExcel {
 
     private WritableCellFormat timesBoldUnderline;
     private WritableCellFormat times;
-    private String outputFile;
+    public String outputFile;
 
     public WriteExcel(String outputFile) {
         this.outputFile = outputFile;
