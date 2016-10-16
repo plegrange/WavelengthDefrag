@@ -2,6 +2,7 @@ package Defragmentation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by FuBaR on 8/30/2016.
@@ -20,9 +21,10 @@ public class FitnessTester {
                 if (linkWavelengths.size() == 0) {
 
                 } else {
-                    fragmentation += calculateFragmentation(linkWavelengths);
+                    fragmentation += calculateFragmentation(linkWavelengths) / linkTable.linkIDs.size();
                 }
             }
+            //fragmentation += testCollisions(linkTable.wavelengths);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -65,12 +67,27 @@ public class FitnessTester {
         return enthropy;
     }
 
+    private double testCollisions(List<Double> wavelengths) {
+        double collisions = 0;
+        Random newRandom = new Random();
+        for (int i = 0; i < 10; i++) {
+            double randomWavelength = minWavelength + (maxWavelength - minWavelength) * newRandom.nextDouble();
+            for (Double wav : wavelengths) {
+                if (Math.pow(randomWavelength - wav, 2) < 1) {
+                    collisions++;
+                    break;
+                }
+            }
+        }
+        return collisions;
+    }
+
     private double calculateFragmentation(List<Double> linkWavelengths) {
         // input : list of a given link's occupied wavelengths
         // output : fragmentation coefficient
         double freeMax = -999;
         double free = 0;
-        double t = 0.2;
+        double t = 0.3;
         double point1;
         double point2;
         double separation;
@@ -87,6 +104,6 @@ public class FitnessTester {
                     freeMax = separation;
             }
         }
-        return (free - freeMax) / free + (collisionsDetected / linkWavelengths.size());
+        return (free - freeMax) / free + collisionsDetected/linkWavelengths.size();
     }
 }

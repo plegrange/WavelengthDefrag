@@ -12,7 +12,6 @@ public class HeuristicAlgorithm {
 
     }
 
-
     FitnessTester fitnessTester;
 
     public LinkTable repack(LinkTable linkTable) {
@@ -23,10 +22,10 @@ public class HeuristicAlgorithm {
         List<Lightpath> lightpaths = linkTable.getLightPaths();
         List<Double> wavelengths = linkTable.wavelengths;
         LinkTable newLinkTable = null;
-        for (int i = 0; i < linkTable.getLightPaths().size(); i++) {
+        for (int i = 0; i < linkTable.getLightPaths().size()*5; i++) {
             Lightpath lightPath = lightpaths.remove(random.nextInt(lightpaths.size()));
             wavelengths.remove(lightPath.getWavelength());
-            lightPath.setWavelength(getLargestGap(wavelengths));
+            lightPath.setWavelength(firstFit(wavelengths));
             lightpaths.add(lightPath);
             LinkTableManager linkTableManager = new LinkTableManager(lightpaths);
             newLinkTable = linkTableManager.buildInitial();

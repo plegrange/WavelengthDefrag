@@ -20,7 +20,7 @@ public class Test {
     Node dragNode;
     ArrayList<Node> exclude;
     boolean pathFinding = false;
-    int totalSignals = 500000;
+    int totalSignals = 5000000;
     Random randomGenerator = new Random();
     Node genSource;
     Node genDest;
@@ -29,9 +29,11 @@ public class Test {
     int noWaves;
     WriteExcel writer1 = new WriteExcel("initialPlot.xls");
     WriteExcel writer2 = new WriteExcel("finalPlot.xls");
-    SuccessOutput successOutput = new SuccessOutput("successes.xls");
+    WriteExcel writer3 = new WriteExcel("afterplot.xls");
+    SuccessOutput defraggedSuccessOutput = new SuccessOutput("successes.xls");
+    SuccessOutput normalSuccessOutput = new SuccessOutput("normalSuccesses.xls");
 
-    public Test(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table, ACO ac, int s1, int s2) {
+    public Test(ArrayList<Node> nodes, ArrayList<Link> links, RoutingTable table, ACO ac, int s1, int s2, boolean useDefrag) {
         this.ac = ac;
         this.nodes = nodes;
         this.links = links;
@@ -39,7 +41,7 @@ public class Test {
         noWaves = (s1);
         NrSignalsPerTime = (s2);
         exclude = new ArrayList<Node>();
-
+        this.useDefrag = useDefrag;
         long startTime = System.currentTimeMillis();
         try {
             RunTest();
@@ -74,6 +76,7 @@ public class Test {
     }
 
     Defrag defrag;
+    boolean useDefrag;
 
     public void RunTest() throws IOException, WriteException {
         table.LoadNetwork();
@@ -82,7 +85,7 @@ public class Test {
         ac.noWaves = noWaves;
         ac.init();
         ac.WPD = Math.round(noWaves / nodes.size());
-        boolean defragged = false;
+        boolean defragged = false, defragCheck = false;
         int counter = 0;
         List<Double> timeStepSuccesses = new ArrayList<>();
         while ((ac.total < totalSignals) || ac.Traffic() || ac.Acks()) {
@@ -106,8 +109,8 @@ public class Test {
                     GenerateTraffic(NrSignalsPerTime);
                 }
             }
-            timeStepSuccesses.add(ac.TimeStep()/NrSignalsPerTime);
-            if (ac.time % 1000 == 0 && !defragged && ac.total > 0) {
+            timeStepSuccesses.add(ac.TimeStep());
+            if (ac.time == 100) {
                 try {
                     writer1.write(links);
                 } catch (IOException e) {
@@ -115,9 +118,11 @@ public class Test {
                 } catch (WriteException e) {
                     e.printStackTrace();
                 }
-                defrag = new Defrag(links);
+                if (useDefrag) {
+                    defrag = new Defrag(links);
+                    rebuildNetwork();
+                }
                 defragged = true;
-                rebuildNetwork();
                 System.out.println("Defragged");
 
                 //ac.BuildCandidates();
@@ -128,8 +133,19 @@ public class Test {
                 } catch (WriteException e) {
                     e.printStackTrace();
                 }
-                NrSignalsPerTime = NrSignalsPerTime * 2;
+                NrSignalsPerTime = NrSignalsPerTime * 4;
             }
+            if(ac.time == 101 && useDefrag){
+
+                    try {
+                        writer3.write(links);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (WriteException e) {
+                        e.printStackTrace();
+                    }
+            }
+            //if (defragged) NrSignalsPerTime++;
         }
 
 
@@ -141,13 +157,13 @@ public class Test {
         //ac.display();
         //ac.Duplicate();
         try {
-            successOutput.write(timeStepSuccesses);
+            if (!useDefrag) normalSuccessOutput.write(timeStepSuccesses);
+            else
+                defraggedSuccessOutput.write(timeStepSuccesses);
         } catch (WriteException e) {
             e.printStackTrace();
         }
         ac.displaySuccess();
-
-
     }
 
     private void rebuildNetwork() {

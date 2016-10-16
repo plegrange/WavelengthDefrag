@@ -54,7 +54,9 @@ public class LightpathManager {
         SecureRandom random = new SecureRandom();
         List<Lightpath> newLightpaths = new ArrayList<>();
         for (Lightpath lightpath : lightPaths) {
-            Lightpath newLightPath = lightpath.cloneWithNewWavelength(min + (max - min) * random.nextDouble());
+            Lightpath newLightPath = lightpath.cloneWithNewWavelength((max + min)/2 + random.nextGaussian()*300);
+            while (newLightPath.getWavelength()<min||newLightPath.getWavelength()>max)
+                newLightPath.setWavelength((min+max)/2 + random.nextGaussian()*300);
             newLightpaths.add(newLightPath);
         }
         return newLightpaths;

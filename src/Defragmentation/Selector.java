@@ -8,10 +8,13 @@ import java.util.Random;
  */
 public class Selector {
     public Selector() {
+        random = new Random();
     }
 
+    Random random;
+
     public LinkTable selectRandom(List<LinkTable> list) {
-        Random random = new Random();
+        //Random random = new Random();
         int index = random.nextInt(list.size());
         return list.get(index);
     }

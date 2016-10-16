@@ -57,4 +57,8 @@ public class LinkTable {
         }
 
     }
+
+    public LinkTable cloneLinkTable(){
+        return new LinkTable(this.lightPaths, this.wavelengths, this.linkIDs, this.table);
+    }
 }
