@@ -21,14 +21,14 @@ public class FitnessTester {
                 if (linkWavelengths.size() == 0) {
 
                 } else {
-                    fragmentation += calculateFragmentation(linkWavelengths) / linkTable.linkIDs.size();
+                    fragmentation += calculateFragmentation(linkWavelengths);
                 }
             }
             //fragmentation += testCollisions(linkTable.wavelengths);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return fragmentation;
+        return fragmentation / linkTable.linkIDs.size();
     }
 
     private List<Double> getLinkWavelengths(int i, LinkTable linkTable) {
@@ -102,8 +102,9 @@ public class FitnessTester {
                 free += separation;
                 if (separation > freeMax)
                     freeMax = separation;
+                // }
             }
         }
-        return (free - freeMax) / free + collisionsDetected/linkWavelengths.size();
+        return 50 * (free - freeMax) / free + 50 * collisionsDetected / linkWavelengths.size();
     }
 }

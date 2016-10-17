@@ -12,6 +12,6 @@ public class Main {
         // TODO Auto-generated method stub
         table = new RoutingTable(nodes, links);
         ACO ac = new ACO(nodes, links, table);
-        new Test(nodes, links, table, ac, 250, 75, true);
+        new Test(nodes, links, table, ac, 250, 20, true);
     }
 }

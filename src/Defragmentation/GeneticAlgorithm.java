@@ -13,10 +13,11 @@ public class GeneticAlgorithm {
     FitnessTester fitnessTester;
     LightpathManager lightpathManager;
     //LinkTableManager linkTableManager;
-    int P = 100;
-    int alpha = 20;
+    int P = 200;
+    int alpha = 80;
     List<LinkTable> chromosomes;
     LinkTable initialTable;
+
     public GeneticAlgorithm(LightpathManager lightpathManager) {
         this.lightpathManager = lightpathManager;
     }
@@ -31,8 +32,8 @@ public class GeneticAlgorithm {
         //initPop();
         initializePopulation();
         //testPopulation();
-        System.out.println("Initial: "+fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 40; i++) {
+        System.out.println("Initial: " + fitnessTester.testLinkTableFitness(linkTableInitial));
+        for (int i = 0; i < 1000; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();
@@ -42,7 +43,7 @@ public class GeneticAlgorithm {
             selectNewPopulation();
             //testPopulation();
             best = selector.selectBest(chromosomes, fitnessTester);
-            System.out.println(i+" -> "+fitnessTester.testLinkTableFitness(best));
+            System.out.println(i + " -> " + fitnessTester.testLinkTableFitness(best));
         }
         best = selector.selectBest(chromosomes, fitnessTester);
         System.out.println(fitnessTester.testLinkTableFitness(best));
@@ -84,12 +85,12 @@ public class GeneticAlgorithm {
             LinkTable A = selector.selectRandom(chromosomes);
             LinkTable B = selector.selectRandom(chromosomes);
             LinkTableManager linkTableManager = new LinkTableManager(crosser.crossover(A, B));
-            LinkTable child = linkTableManager.buildInitial();
-            newPop.add(child);
+             //linkTableManager.buildInitial();
+            //LinkTableManager linkTableManager = new LinkTableManager(A.getLightPaths());
+            newPop.add(linkTableManager.buildInitial());
         }
         return newPop;
     }
-
 
     private void initializePopulation() {
         chromosomes = new ArrayList<>();
@@ -100,10 +101,10 @@ public class GeneticAlgorithm {
         }
     }
 
-    private void initPop(){
+    private void initPop() {
         mutator = new Mutator();
         chromosomes = new ArrayList<>();
-        for(int i = 0 ; i < P; i++){
+        for (int i = 0; i < P; i++) {
             chromosomes.add(mutator.mutateLightpaths(initialTable.cloneLinkTable()));
         }
     }

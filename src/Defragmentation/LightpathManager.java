@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by FuBaR on 8/28/2016.
@@ -51,13 +52,18 @@ public class LightpathManager {
 
     public List<Lightpath> getRandomLightpaths() {
         double min = 1200.00, max = 1800;
-        SecureRandom random = new SecureRandom();
+        // SecureRandom random = new SecureRandom();
+        Random rand = new Random();
         List<Lightpath> newLightpaths = new ArrayList<>();
         for (Lightpath lightpath : lightPaths) {
-            Lightpath newLightPath = lightpath.cloneWithNewWavelength((max + min)/2 + random.nextGaussian()*300);
-            while (newLightPath.getWavelength()<min||newLightPath.getWavelength()>max)
-                newLightPath.setWavelength((min+max)/2 + random.nextGaussian()*300);
-            newLightpaths.add(newLightPath);
+            double newWave;
+            // double bucketPoint = (min+max)/2 + rand.nextGaussian()*300;
+            do {
+                newWave = min + (max - min) * Math.random();
+                //newWave = (min + max)/2 + rand.nextGaussian()*250;
+            } while (newWave > max || newWave < min);
+            Lightpath newLightPath = lightpath.cloneWithNewWavelength(newWave);
+            newLightpaths.add(newLightPath); //(min+max)/2 + random.nextGaussian()*300);
         }
         return newLightpaths;
     }

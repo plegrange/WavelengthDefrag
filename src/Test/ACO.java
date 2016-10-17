@@ -90,9 +90,11 @@ public class ACO {
     }
 
     public double TimeStep() {
-        double successPerTimeStep = success;
+        double successPerTimeStep;
         ProcessAcknowledgements();
-        successPerTimeStep = (success - successPerTimeStep);
+        if (time > 0)
+            successPerTimeStep = success / time;
+        else successPerTimeStep = 0;
         NetworkSend();
         time++;
         return successPerTimeStep;

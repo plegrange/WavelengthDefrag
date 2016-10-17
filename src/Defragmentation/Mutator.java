@@ -8,50 +8,70 @@ import java.util.Random;
  */
 public class Mutator {
     public Mutator() {
+        globalRandom = new Random();
     }
 
-    private double mutationRate = 0.01;
-    private double mutationDistance = 0.5;
+    private double mutationRate;
+    private double mutationDistance = 50;
     private Random globalRandom;
+    private double thickness;
 
     public LinkTable mutateLightpaths(LinkTable linkTable) {
         List<Lightpath> lightpaths = linkTable.getLightPaths();
         Random random = new Random();
         globalRandom = new Random();
-        for (Lightpath lightpath : lightpaths) {
-            if (random.nextDouble() < mutationRate) {
-                double old = lightpath.getWavelength();
-                lightpath.setWavelength(getMutatedWavelength(old, linkTable.wavelengths));
-                //lightpath.setWavelength(getBucketWavelength(old, linkTable.wavelengths));
-                //lightpath.setWavelength(getAvailableWavelength(old - mutationDistance, old + mutationDistance, linkTable.wavelengths));
-                linkTable.replaceWavelength(old, lightpath.getWavelength());
-            }
+        //mutationRate = 1;
+        thickness = 0.4;//getSmallestGap(linkTable.wavelengths);
+        for (int i = 0; i < lightpaths.size()/100; i++) {
+            //if (Math.random() * 100 < mutationRate) {
+            //mutationRate = (Math.random());
+            Lightpath lightpath = lightpaths.get(random.nextInt(lightpaths.size()));
+            //lightpaths.remove(lightpath);
+            double old = lightpath.getWavelength();
+            lightpath.setWavelength(getMutatedWavelength(old, linkTable.wavelengths));
+            //lightpath.setWavelength(getBucketWavelength(old, linkTable.wavelengths));
+            //lightpath.setWavelength(getAvailableWavelength(1200,1800, linkTable.wavelengths));
+            linkTable.replaceWavelength(old, lightpath.getWavelength());
+            //lightpaths.add(lightpath);
         }
+        //}
         LinkTableManager linkTableManager = new LinkTableManager(lightpaths);
         return linkTableManager.buildInitial();
+    }
+
+    private double getSmallestGap(List<Double> wavelengths) {
+        double smallestGap = 999999;
+        for (int i = 0; i < wavelengths.size() - 1; i++) {
+            double left = wavelengths.get(i);
+            double right = wavelengths.get(i + 1);
+            if (right - left < smallestGap) {
+                smallestGap = right - left;
+            }
+        }
+        return smallestGap;
     }
 
     private double getMutatedWavelength(double wav, List<Double> wavelengths) {
         double newWav;
         do {
-            newWav = wav + 2 * mutationDistance * globalRandom.nextDouble();
+            newWav = wav - mutationDistance + 2 * mutationDistance * Math.random();
         } while (!isAvailable(newWav, wavelengths));
         return newWav;
     }
 
     private double getAvailableWavelength(double min, double max, List<Double> wavelengths) {
-        Random random = new Random();
+        //Random random = new Random();
         double value;
         do {
-            value = min + (max - min) * globalRandom.nextDouble();
+            value = min + (max - min) * Math.random();
         } while (!isAvailable(value, wavelengths));
         return value;
     }
 
     private boolean isAvailable(double wavelength, List<Double> wavelengths) {
         if (wavelength < 1200 || wavelength > 1800) return false;
-        for (Double wav : wavelengths) {
-            if (wav == wavelength)
+        for (int i = 0; i < wavelengths.size(); i++) {
+            if (Math.abs(wavelength - wavelengths.get(i)) < thickness || wavelength == wavelengths.get(i))
                 return false;
         }
         return true;
@@ -59,12 +79,16 @@ public class Mutator {
 
     private double getBucketWavelength(double wav, List<Double> wavelengths) {
         double lowerBound = 1200;
-        double bucketWRange = 100;
+        double bucketWRange = 100, bucketMidPoint;
+        double wavelength;
         while (lowerBound <= 1800 - bucketWRange) {
-            if (wav < 1200 || wav > 1800)
-                return getAvailableWavelength(1200, 1800, wavelengths);
+            bucketMidPoint = lowerBound + bucketWRange / 2;
             if (wav < lowerBound + bucketWRange) {
-                return getAvailableWavelength(lowerBound, lowerBound + bucketWRange, wavelengths);
+                wavelength = bucketMidPoint + globalRandom.nextGaussian() * (bucketMidPoint - lowerBound);
+                while (!isAvailable(wavelength, wavelengths)) {
+                    wavelength = bucketMidPoint + globalRandom.nextGaussian() * (bucketMidPoint - lowerBound);
+                }
+                return wavelength;
             }
             lowerBound += bucketWRange;
         }

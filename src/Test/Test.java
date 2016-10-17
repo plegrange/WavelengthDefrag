@@ -20,7 +20,7 @@ public class Test {
     Node dragNode;
     ArrayList<Node> exclude;
     boolean pathFinding = false;
-    int totalSignals = 5000000;
+    int totalSignals = 300000;
     Random randomGenerator = new Random();
     Node genSource;
     Node genDest;
@@ -109,8 +109,11 @@ public class Test {
                     GenerateTraffic(NrSignalsPerTime);
                 }
             }
-            timeStepSuccesses.add(ac.TimeStep());
-            if (ac.time == 100) {
+            double success = ac.TimeStep();
+            //if (ac.time % 5 == 0)
+            timeStepSuccesses.add(success / (NrSignalsPerTime));
+            if (ac.time == 595) NrSignalsPerTime = NrSignalsPerTime + 10;
+            if (ac.time == 600) {
                 try {
                     writer1.write(links);
                 } catch (IOException e) {
@@ -122,7 +125,7 @@ public class Test {
                     defrag = new Defrag(links);
                     rebuildNetwork();
                 }
-                defragged = true;
+                //defragged = true;
                 System.out.println("Defragged");
 
                 //ac.BuildCandidates();
@@ -133,22 +136,24 @@ public class Test {
                 } catch (WriteException e) {
                     e.printStackTrace();
                 }
-                NrSignalsPerTime = NrSignalsPerTime * 4;
+                defragged = true;
+                //NrSignalsPerTime = NrSignalsPerTime + 5;
             }
-            if(ac.time == 101 && useDefrag){
+            if (ac.time == 601 && useDefrag) {
 
-                    try {
-                        writer3.write(links);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (WriteException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    writer3.write(links);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
             }
-            //if (defragged) NrSignalsPerTime++;
+            if (defragged) {
+                //NrSignalsPerTime++;
+            }
+            // if (!defragged) NrSignalsPerTime++;
         }
-
-
         System.out.println(ac.success + " Successes");
         System.out.println(ac.blocked + " Blocks");
         System.out.println(ac.nlFailed + " Failed");

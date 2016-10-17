@@ -1,5 +1,6 @@
 package Defragmentation;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -7,18 +8,20 @@ import java.util.Random;
  * Created by FuBaR on 8/30/2016.
  */
 public class Crosser {
+
     public Crosser() {
+
     }
 
     public List<Lightpath> crossover(LinkTable A, LinkTable B) {
-        List<Lightpath> newLightpaths = A.getLightPaths();
-        if (A.equals(B)) return newLightpaths;
-        double fitnessA = fitnessTester.testLinkTableFitness(A);
-        double fitnessB = fitnessTester.testLinkTableFitness(B);
-        for (Lightpath lightpath : newLightpaths) {
-            lightpath.setWavelength(selectWavelength(getLightpath(A.getLightPaths(), lightpath.id), fitnessA, getLightpath(B.getLightPaths(), lightpath.id), fitnessB, newLightpaths));
+        //if (fitnessTester.testLinkTableFitness(A) < fitnessTester.testLinkTableFitness(B))
+        //  return A.getLightPaths();
+        //else return B.getLightPaths();
+        List<Lightpath> lightpaths = new ArrayList<>();
+        for (Lightpath lightpath : A.getLightPaths()) {
+            lightpaths.add(lightpath.cloneWithNewWavelength(selectWavelength(lightpath, A.fitness, getLightpath(B.getLightPaths(), lightpath.id), B.fitness, lightpaths)));
         }
-        return newLightpaths;
+        return lightpaths;
     }
 
     private Lightpath getLightpath(List<Lightpath> list, String id) {
