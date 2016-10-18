@@ -20,7 +20,7 @@ public class Test {
     Node dragNode;
     ArrayList<Node> exclude;
     boolean pathFinding = false;
-    int totalSignals = 300000;
+    int totalSignals = 600000;
     Random randomGenerator = new Random();
     Node genSource;
     Node genDest;
@@ -111,8 +111,8 @@ public class Test {
             }
             double success = ac.TimeStep();
             //if (ac.time % 5 == 0)
-            timeStepSuccesses.add(success / (NrSignalsPerTime));
-            if (ac.time == 595) NrSignalsPerTime = NrSignalsPerTime + 10;
+            timeStepSuccesses.add(success / NrSignalsPerTime);
+            if (ac.time == 600) NrSignalsPerTime = NrSignalsPerTime * 2;
             if (ac.time == 600) {
                 try {
                     writer1.write(links);
@@ -139,7 +139,7 @@ public class Test {
                 defragged = true;
                 //NrSignalsPerTime = NrSignalsPerTime + 5;
             }
-            if (ac.time == 601 && useDefrag) {
+            if (ac.time == 602 && useDefrag) {
 
                 try {
                     writer3.write(links);

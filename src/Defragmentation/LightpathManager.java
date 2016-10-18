@@ -67,4 +67,32 @@ public class LightpathManager {
         }
         return newLightpaths;
     }
+
+    public List<Lightpath> getSortedLightpaths() {
+        double min = 1200.00, max = 1800;
+        // SecureRandom random = new SecureRandom();
+        Random rand = new Random();
+        int maxLength = 1;
+        for (Lightpath lightpath : lightPaths) {
+            if (lightpath.route._Path.size() > maxLength)
+                maxLength = lightpath.route._Path.size();
+        }
+        double bucketRange = (max - min) / maxLength;
+        double bucketPoint;
+        List<Lightpath> newLightpaths = new ArrayList<>();
+        for (Lightpath lightpath : lightPaths) {
+            int length = lightpath.route._Path.size();
+            double newWave;
+            bucketPoint = min + length * bucketRange - 0.5 * bucketRange;
+
+            do {
+                newWave = bucketPoint + rand.nextGaussian() * bucketRange * 0.5;
+                //newWave = min + (max - min) * Math.random();
+                //newWave = (min + max)/2 + rand.nextGaussian()*250;
+            } while (newWave > max || newWave < min);
+            Lightpath newLightPath = lightpath.cloneWithNewWavelength(newWave);
+            newLightpaths.add(newLightPath); //(min+max)/2 + random.nextGaussian()*300);
+        }
+        return newLightpaths;
+    }
 }

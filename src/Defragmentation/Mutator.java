@@ -12,7 +12,7 @@ public class Mutator {
     }
 
     private double mutationRate;
-    private double mutationDistance = 50;
+    private double mutationDistance = 4;
     private Random globalRandom;
     private double thickness;
 
@@ -21,8 +21,8 @@ public class Mutator {
         Random random = new Random();
         globalRandom = new Random();
         //mutationRate = 1;
-        thickness = 0.4;//getSmallestGap(linkTable.wavelengths);
-        for (int i = 0; i < lightpaths.size()/100; i++) {
+        thickness = 0.2;//getSmallestGap(linkTable.wavelengths);
+        for (int i = 0; i < lightpaths.size() * 0.12; i++) {
             //if (Math.random() * 100 < mutationRate) {
             //mutationRate = (Math.random());
             Lightpath lightpath = lightpaths.get(random.nextInt(lightpaths.size()));

@@ -13,8 +13,8 @@ public class GeneticAlgorithm {
     FitnessTester fitnessTester;
     LightpathManager lightpathManager;
     //LinkTableManager linkTableManager;
-    int P = 200;
-    int alpha = 80;
+    int P = 50;
+    int alpha = 26;
     List<LinkTable> chromosomes;
     LinkTable initialTable;
 
@@ -95,7 +95,7 @@ public class GeneticAlgorithm {
     private void initializePopulation() {
         chromosomes = new ArrayList<>();
         for (int i = 0; i < P; i++) {
-            List<Lightpath> newLightpaths = lightpathManager.getRandomLightpaths();
+            List<Lightpath> newLightpaths = lightpathManager.getSortedLightpaths(); //lightpathManager.getRandomLightpaths();
             LinkTableManager linkTableManager = new LinkTableManager(newLightpaths);
             chromosomes.add(linkTableManager.buildInitial());
         }
