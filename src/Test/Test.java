@@ -99,9 +99,9 @@ public class Test {
                 }
             }*/
 
-
             System.out.println(ac.time);
             //counter++;
+            if (ac.time == 800) NrSignalsPerTime = NrSignalsPerTime + 10;
             if (ac.totalGen < totalSignals) {
                 if ((totalSignals - ac.totalGen) < NrSignalsPerTime) {
                     GenerateTraffic(totalSignals - ac.totalGen);
@@ -109,11 +109,13 @@ public class Test {
                     GenerateTraffic(NrSignalsPerTime);
                 }
             }
+
             double success = ac.TimeStep();
             //if (ac.time % 5 == 0)
             timeStepSuccesses.add(success / NrSignalsPerTime);
-            if (ac.time == 200) NrSignalsPerTime = NrSignalsPerTime + 100;
-            if (ac.time == 200) {
+
+            //NrSignalsPerTime++;
+            if (ac.time == 800) {
                 try {
                     writer1.write(links);
                 } catch (IOException e) {
@@ -139,7 +141,7 @@ public class Test {
                 defragged = true;
                 //NrSignalsPerTime = NrSignalsPerTime + 5;
             }
-            if (ac.time == 202 && useDefrag) {
+            if (ac.time == 801 && useDefrag) {
 
                 try {
                     writer3.write(links);

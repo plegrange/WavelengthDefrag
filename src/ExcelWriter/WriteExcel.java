@@ -80,7 +80,7 @@ public class WriteExcel {
         for (int i = 0; i < links.size(); i++) {
             ArrayList<Double> wavelengths = getWavelengths(links.get(i));
             for (int j = 0; j < wavelengths.size(); j++) {
-                addNumber(sheet, 0, k, Integer.valueOf(links.get(i).getLinkID()));
+                addNumber(sheet, 0, k, i);
                 addNumber(sheet, 1, k, wavelengths.get(j));
                 k++;
             }

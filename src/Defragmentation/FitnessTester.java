@@ -28,7 +28,9 @@ public class FitnessTester {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return fragmentation / linkTable.linkIDs.size();
+
+        linkTable.fitness = fragmentation / linkTable.linkIDs.size();
+        return linkTable.fitness;
     }
 
     private List<Double> getLinkWavelengths(int i, LinkTable linkTable) {
@@ -87,7 +89,7 @@ public class FitnessTester {
         // output : fragmentation coefficient
         double freeMax = -999;
         double free = 0;
-        double t = 0.05;
+        double t = 0.1;
         double point1;
         double point2;
         double separation;
@@ -105,6 +107,6 @@ public class FitnessTester {
                 // }
             }
         }
-        return 35 * (free - freeMax) / free + 65 * collisionsDetected / linkWavelengths.size();
+        return 90 * (free - freeMax) / free + 10 * collisionsDetected / linkWavelengths.size();
     }
 }

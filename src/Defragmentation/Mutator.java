@@ -21,7 +21,7 @@ public class Mutator {
         Random random = new Random();
         globalRandom = new Random();
         //mutationRate = 1;
-        thickness = 0.1;//getSmallestGap(linkTable.wavelengths);
+        thickness = 0.2;// getSmallestGap(linkTable.wavelengths);
         for (int i = 0; i < lightpaths.size() * 0.1; i++) {
             //if (Math.random() * 100 < mutationRate) {
             //mutationRate = (Math.random());
@@ -54,7 +54,7 @@ public class Mutator {
     private double getMutatedWavelength(double wav, List<Double> wavelengths) {
         double newWav;
         do {
-            newWav = wav - mutationDistance + 2 * mutationDistance * Math.random();
+            newWav = getAvailableWavelength(wav - mutationDistance, wav + mutationDistance, wavelengths);
         } while (!isAvailable(newWav, wavelengths));
         return newWav;
     }
@@ -62,8 +62,14 @@ public class Mutator {
     private double getAvailableWavelength(double min, double max, List<Double> wavelengths) {
         //Random random = new Random();
         double value;
+        int loopCounter = 0;
         do {
-            value = min + (max - min) * Math.random();
+            if (loopCounter >= 10)
+                value = (1200 + 600 * Math.random());
+            else {
+                loopCounter++;
+                value = (min + (max - min) * Math.random());
+            }
         } while (!isAvailable(value, wavelengths));
         return value;
     }

@@ -59,7 +59,7 @@ public class LightpathManager {
             double newWave;
             // double bucketPoint = (min+max)/2 + rand.nextGaussian()*300;
             do {
-                newWave = min + (max - min) * Math.random();
+                newWave = (min + (max - min) * (Math.random()));
                 //newWave = (min + max)/2 + rand.nextGaussian()*250;
             } while (newWave > max || newWave < min);
             Lightpath newLightPath = lightpath.cloneWithNewWavelength(newWave);
