@@ -37,7 +37,7 @@ public class Crosser {
     private double selectWavelength(Lightpath a, double fitnessA, Lightpath b, double fitnessB, List<Lightpath> lightpaths) {
         Random random = new Random();
         if (a.getWavelength() == b.getWavelength()) return a.getWavelength();
-        double wavelength = (fitnessA / (fitnessA + fitnessB) * a.getWavelength() + fitnessB / (fitnessA + fitnessB) * b.getWavelength());
+        double wavelength = (1 - fitnessA / (fitnessA + fitnessB)) * a.getWavelength() + (1 - fitnessB / (fitnessA + fitnessB)) * b.getWavelength();
         if (!isAvailable(wavelength, lightpaths)) {
             do {
                 if (a.getWavelength() < b.getWavelength())

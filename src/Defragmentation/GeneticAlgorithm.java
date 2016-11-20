@@ -13,7 +13,7 @@ public class GeneticAlgorithm {
     FitnessTester fitnessTester;
     LightpathManager lightpathManager;
     //LinkTableManager linkTableManager;
-    int P = 50;
+    int P = 100;
     int alpha = 10;
     List<LinkTable> chromosomes;
     LinkTable initialTable;
@@ -33,7 +33,7 @@ public class GeneticAlgorithm {
         initializePopulation();
         //testPopulation();
         System.out.println("Initial: " + fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 10000; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();

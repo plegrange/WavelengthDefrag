@@ -11,8 +11,8 @@ public class Mutator {
         globalRandom = new Random();
     }
 
-    private double mutationRate;
-    private double mutationDistance = 2;
+    private double mutationRate = 0.01;
+    private double mutationDistance = 10;
     private Random globalRandom;
     private double thickness;
 
@@ -22,17 +22,18 @@ public class Mutator {
         globalRandom = new Random();
         //mutationRate = 1;
         thickness = 0.2;// getSmallestGap(linkTable.wavelengths);
-        for (int i = 0; i < lightpaths.size() * 0.1; i++) {
-            //if (Math.random() * 100 < mutationRate) {
-            //mutationRate = (Math.random());
-            Lightpath lightpath = lightpaths.get(random.nextInt(lightpaths.size()));
-            //lightpaths.remove(lightpath);
-            double old = lightpath.getWavelength();
-            lightpath.setWavelength(getMutatedWavelength(old, linkTable.wavelengths));
-            //lightpath.setWavelength(getBucketWavelength(old, linkTable.wavelengths));
-            //lightpath.setWavelength(getAvailableWavelength(1200,1800, linkTable.wavelengths));
-            linkTable.replaceWavelength(old, lightpath.getWavelength());
-            //lightpaths.add(lightpath);
+        for (int i = 0; i < lightpaths.size(); i++) {
+            if (Math.random() < mutationRate) {
+                //mutationRate = (Math.random());
+                Lightpath lightpath = lightpaths.get(random.nextInt(lightpaths.size()));
+                //lightpaths.remove(lightpath);
+                double old = lightpath.getWavelength();
+                lightpath.setWavelength(getMutatedWavelength(old, linkTable.wavelengths));
+                //lightpath.setWavelength(getBucketWavelength(old, linkTable.wavelengths));
+                //lightpath.setWavelength(getAvailableWavelength(1200,1800, linkTable.wavelengths));
+                linkTable.replaceWavelength(old, lightpath.getWavelength());
+                //lightpaths.add(lightpath);
+            }
         }
         //}
         LinkTableManager linkTableManager = new LinkTableManager(lightpaths);

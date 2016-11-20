@@ -107,6 +107,6 @@ public class FitnessTester {
                 // }
             }
         }
-        return 90 * (free - freeMax) / free + 10 * collisionsDetected / linkWavelengths.size();
+        return 70 * (free - freeMax) / free + 30 * collisionsDetected / linkWavelengths.size();
     }
 }
