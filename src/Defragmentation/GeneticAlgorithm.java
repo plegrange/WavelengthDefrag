@@ -14,7 +14,7 @@ public class GeneticAlgorithm {
     LightpathManager lightpathManager;
     //LinkTableManager linkTableManager;
     int P = 100;
-    int alpha = 10;
+    int alpha = 40;
     List<LinkTable> chromosomes;
     LinkTable initialTable;
 
@@ -33,7 +33,7 @@ public class GeneticAlgorithm {
         initializePopulation();
         //testPopulation();
         System.out.println("Initial: " + fitnessTester.testLinkTableFitness(linkTableInitial));
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 20000; i++) {
             //System.out.println(i);
             List<LinkTable> tempList = crossOver();
             //testPopulation();
@@ -82,8 +82,8 @@ public class GeneticAlgorithm {
     private List<LinkTable> crossOver() {
         List<LinkTable> newPop = new ArrayList<>();
         for (int i = 0; i < P; i++) {
-            LinkTable A = selector.selectElite(chromosomes, fitnessTester, alpha); //selector.selectRandom(chromosomes);
-            LinkTable B = selector.selectElite(chromosomes, fitnessTester, alpha);
+            LinkTable A = selector.selectRandom(chromosomes);
+            LinkTable B = selector.selectRandom(chromosomes);//selector.selectElite(chromosomes, fitnessTester, alpha);
             LinkTableManager linkTableManager = new LinkTableManager(crosser.crossover(A, B));
             //linkTableManager.buildInitial();
             //LinkTableManager linkTableManager = new LinkTableManager(A.getLightPaths());

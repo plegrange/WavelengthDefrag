@@ -110,7 +110,7 @@ public class RoutingTable {
         String line;
         String[] split;
         boolean linkTest = false;
-        File file = new File("network.txt");
+        File file = new File("network14.txt");
         Scanner scan = null;
         try {
             scan = new Scanner(file);
