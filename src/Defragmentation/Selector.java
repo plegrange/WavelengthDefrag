@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by FuBaR on 8/30/2016.
+ * Created by s213391244 on 8/30/2016.
  */
 public class Selector {
     public Selector() {

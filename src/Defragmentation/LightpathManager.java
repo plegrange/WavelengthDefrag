@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * Created by FuBaR on 8/28/2016.
+ * Created by s213391244 on 8/28/2016.
  */
 public class LightpathManager {
     ArrayList<Link> links;

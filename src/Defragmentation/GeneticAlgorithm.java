@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by FuBaR on 8/30/2016.
+ * Created by s213391244 on 8/30/2016.
  */
 public class GeneticAlgorithm {
     Mutator mutator;

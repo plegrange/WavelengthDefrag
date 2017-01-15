@@ -1,0 +1,16 @@
+INSTRUCTIONS:
+1. Change parameters in the "new Test(...)" contructor method call in Main.java.
+1.1 new Test(nodes, links, table, ac, 250, 15, true) will initialize 15 signals per node during each time step and a true boolean will call for the use of defragmentation during simulation.
+2. Upon completion of the simulation, data will be written to .xls files.
+2.1 Simulations using defrag will output success rate data to "successes.xls".
+2.2 Simulations not using defrag will output succes rate data to "normalSuccesses.xls".
+2.3 Data regarding the state of network-wide fragmentation at moments before and after defragmentation, are output to "initialPlot.xls" and "finalPlot.xls".
+    This data (the LinkTable) is displayed in tabulated form in "initial.xls" and "final.xls" respectively. A graphic plot is also created in "plot.xls".
+Additional Notes:
+1. Traffic increase amounts and the timestep at which they occur may be changed in Test.java
+2. Network simulator details are loaded from "network.txt" or "network14,txt". This may be set in RoutingTable.java
+3. Genetic Algorithm parameters may be changed in the GeneticAlgorithm.java, Mutator.java, Crosser.java and Selector.java classes.
+SDK and API required:
+1. Java 1.8 SDK
+2. Microsoft Excel 1997 or later.
+3. JXL API
